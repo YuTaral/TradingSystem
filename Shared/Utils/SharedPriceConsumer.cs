@@ -1,20 +1,22 @@
 ﻿using Confluent.Kafka;
+using Shared.Models;
 using System.Collections.Concurrent;
+using System.Net;
 using System.Text.Json;
 using static Shared.Constants;
 
-namespace Shared.Services
+namespace Shared.Utils
 {
     /// <summary>
-    ///     Shared PriceConsumerService used to consume kafka events (messages)
+    ///     Shared PriceConsumer used to consume kafka events (messages)
     ///     from the PriceService to update the stock prices
     /// </summary>
-    public class SharedPriceConsumerService
+    public class SharedPriceConsumer
     {
         private readonly IConsumer<string, string> kafkaConsumer;
         private readonly string topic = KAFKA_STOCK_PRICE_UPDATE_TOPIC;
 
-        public ConcurrentDictionary<string, decimal> stockPrices = new();
+        private ConcurrentDictionary<string, decimal> stockPrices = new();
 
         /// <summary>
         ///     Class constructor
@@ -24,7 +26,7 @@ namespace Shared.Services
         ///     for each individual consumer which use the shared consumer
         ///     so each consumer consumes the events (messages) individually
         /// </param>
-        public SharedPriceConsumerService(string groupId)
+        public SharedPriceConsumer(string groupId)
         {
             var config = new ConsumerConfig
             {
@@ -75,6 +77,24 @@ namespace Shared.Services
         public void StopConsuming()
         {
             kafkaConsumer.Close();
+        }
+
+
+        /// <summary>
+        ///     Return the latest stock price if stock with this ticker exists.
+        ///     If the stock does not exist, return -1
+        /// </summary>
+        /// <param name="ticker">
+        ///     The stock ticker
+        /// </param>
+        public decimal GetStockPrice(string ticker)
+        {
+            if (stockPrices.TryGetValue(ticker, out decimal value))
+            {
+                return value;
+            }
+
+            return -1;
         }
     }
 }
