@@ -8,12 +8,12 @@ using Shared.Utils;
 namespace OrderService.Data.Services
 {
     /// <summary>
-    ///  OrderService class implementing IOrderService
+    ///     OrderService class implementing IOrderService
     /// </summary>
-    public class OrderService(AppDBContext DB, OrderServicePriceConsumer ps) : IOrderService
+    public class OrderService(AppDBContext DB, PriceConsumer ps) : IOrderService
     {
         private readonly AppDBContext DBContext = DB;
-        private readonly OrderServicePriceConsumer priceConsumer = ps;
+        private readonly PriceConsumer priceConsumer = ps;
 
         public async Task<ServiceActionResult<Order>> AddOrder(string userIdStr, OrderDTO? orderDTO)
         {

@@ -1,9 +1,6 @@
-﻿using Shared.Models;
-using Shared.Utils;
-using System.Net;
-using static Shared.Constants;
+﻿using Shared.Utils;
 
-namespace OrderService.Data.Services
+namespace PortfolioService.Data.Services
 {
     /// <summary>
     ///     OrderServicePriceConsumer as background service.
@@ -11,7 +8,7 @@ namespace OrderService.Data.Services
     /// </summary>
     public class PriceConsumer: BackgroundService
     {
-        private const string CONSUMER_GROUP_ID = "group_1";
+        private const string CONSUMER_GROUP_ID = "group_2";
         private readonly SharedPriceConsumer priceConsumer;
 
         /// <summary>
@@ -54,8 +51,8 @@ namespace OrderService.Data.Services
         /// <param name="ticker">
         ///     The stock ticker
         /// </param>
-        public decimal GetStockPrice(string ticker) {
-
+        public decimal GetStockPrice(string ticker)
+        {
             return priceConsumer.GetStockPrice(ticker);
         }
     }

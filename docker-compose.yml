@@ -46,5 +46,17 @@ services:
       - kafka
       - priceservice  
 
+  portfolioservice:
+    build:
+      context: .
+      dockerfile: ./PortfolioService/Dockerfile
+    ports:
+      - "5003:8080"
+    networks:
+      - kafka
+    depends_on:
+      - kafka
+      - priceservice  
+
 networks:
   kafka:

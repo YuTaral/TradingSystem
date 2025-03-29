@@ -11,11 +11,11 @@ namespace OrderService.Data.Entities
         [Key]
         public long Id { get; set; }
 
-        [Range(1, long.MaxValue, ErrorMessage = ORDER_USER_ID_ERROR)]
+        [Range(1, long.MaxValue, ErrorMessage = USER_ID_ERROR)]
         public required long UserId { get; set; }
 
-        [MinLength(1, ErrorMessage = ORDER_TICKER_IS_MANDATORY_ERROR)]
-        [MaxLength(20, ErrorMessage = ORDER_TICKER_MAX_LEN_ERROR)]
+        [MinLength(1, ErrorMessage = STOCK_TICKER_IS_MANDATORY_ERROR)]
+        [MaxLength(20, ErrorMessage = STOCK_TICKER_MAX_LEN_ERROR)]
         public required string Ticker { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = ORDER_QUANTITY_RANGE_ERROR)]

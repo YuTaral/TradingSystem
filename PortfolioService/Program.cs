@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using OrderService.Data;
-using OrderService.Data.Services;
-using MyOrderService = OrderService.Data.Services.OrderService;
+using PortfolioService.Data;
+using PortfolioService.Data.Services;
+using MyPortfolioService = PortfolioService.Data.Services.PortfolioService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHostedService((sp) => sp.GetRequiredService<PriceConsumer>());
 builder.Services.AddSingleton<PriceConsumer>();
 
-builder.Services.AddDbContext<AppDBContext>(options =>
+builder.Services.AddDbContext<PortfolioDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IOrderService, MyOrderService>();
+builder.Services.AddScoped<IPortfolioService, MyPortfolioService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
