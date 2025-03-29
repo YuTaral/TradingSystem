@@ -10,7 +10,7 @@ using OrderService.Data;
 
 namespace OrderService.Migrations
 {
-    [DbContext(typeof(AppDBContext))]
+    [DbContext(typeof(OrderDBContext))]
     [Migration("20250329203517_initialMigration1")]
     partial class initialMigration1
     {

@@ -10,9 +10,9 @@ namespace OrderService.Data.Services
     /// <summary>
     ///     OrderService class implementing IOrderService
     /// </summary>
-    public class OrderService(AppDBContext DB, PriceConsumer ps) : IOrderService
+    public class OrderService(OrderDBContext DB, PriceConsumer ps) : IOrderService
     {
-        private readonly AppDBContext DBContext = DB;
+        private readonly OrderDBContext DBContext = DB;
         private readonly PriceConsumer priceConsumer = ps;
 
         public async Task<ServiceActionResult<Order>> AddOrder(string userIdStr, OrderDTO? orderDTO)
