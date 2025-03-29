@@ -3,7 +3,7 @@ using OrderService.Data.DTO;
 using System.Net;
 using static Shared.Constants;
 using OrderService.Data.Entities;
-using Shared;
+using Shared.Utils;
 
 namespace OrderService.Data.Services
 {
@@ -53,10 +53,9 @@ namespace OrderService.Data.Services
                 return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_INVALID_DATA, null);
             }
 
-            // Get the latest price of the stock, if invalid ticker is provided the GetStockPrice will return
-            // status code <> 200
-            var getPriceResult = priceConsumer.GetStockPrice(orderDTO.Ticker);
-            if (getPriceResult.Code != (int)HttpStatusCode.OK)
+            // Get the latest price of the stock, if invalid ticker is provided -1 is returned
+            var stockPrice = priceConsumer.GetStockPrice(orderDTO.Ticker);
+            if (stockPrice == -1)
             {
                 return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_FAILED_TO_GET_PRICE, null);
             }
@@ -67,7 +66,7 @@ namespace OrderService.Data.Services
                 Ticker = orderDTO.Ticker,
                 Quantity = orderDTO.Quantity,
                 Side = orderDTO.Side,
-                Price = getPriceResult.Data
+                Price = stockPrice
             };
 
             // Validate the model's annotations
