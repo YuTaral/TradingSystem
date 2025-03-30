@@ -3,6 +3,7 @@ using PortfolioService.Data.DTO;
 using PortfolioService.Data.Entities;
 using Shared.Models;
 using Shared.Models.DTO;
+using Shared.Utils;
 using System.Net;
 using static Shared.Constants;
 
@@ -21,7 +22,7 @@ namespace PortfolioService.Data.Services
             // Validate
             if (!long.TryParse(userIdStr, out var userId))
             {
-                return new ServiceActionResult<PortfolioDTO>(HttpStatusCode.BadRequest, USER_ID_ERROR, null);
+                return new ServiceActionResult<PortfolioDTO>(HttpStatusCode.BadRequest, USER_ID_ERROR, []);
             }
 
             // Get list of user's owned stocks
@@ -47,23 +48,23 @@ namespace PortfolioService.Data.Services
             }
 
             return new ServiceActionResult<PortfolioDTO>(HttpStatusCode.OK, "", 
-                new PortfolioDTO { UserId = userId, Value = Math.Round(totalValue, 2) });
+                [new PortfolioDTO { UserId = userId, Value = Math.Round(totalValue, 2) }]);
         }
 
-        public async Task<ServiceActionResult<bool>> UpdatePortfolio(long userId, OrderDTO order)
+        public async Task<ServiceActionResult<string>> UpdatePortfolio(OrderDTO order)
         {
             // Check whether the user has record for this stock
             var portfolio = await DBContext.Portfolios
-                            .Where(p => p.UserId == userId && p.Ticker == order.Ticker)
+                            .Where(p => p.UserId == order.userId && p.Ticker == order.Ticker)
                             .FirstOrDefaultAsync();
 
             if (order.Side == OrderSide.SELL.ToString())
             {
-                return await SellStock(portfolio, order, userId);
+                return await SellStock(portfolio, order);
             } 
             else
             {
-                return await BuyStock(portfolio, order, userId);
+                return await BuyStock(portfolio, order);
             }
         }
 
@@ -76,21 +77,24 @@ namespace PortfolioService.Data.Services
         /// <param name="order">
         ///     The order containing the stock's ticker and quantity
         /// </param>
-        /// <param name="userId">
-        ///     The user id
-        /// </param>
-        /// <returns></returns>
-        public async Task<ServiceActionResult<bool>> BuyStock(Portfolio? portfolio, OrderDTO order, long userId)
+        public async Task<ServiceActionResult<string>> BuyStock(Portfolio? portfolio, OrderDTO order)
         {
             if (portfolio == null)
             {
                 // Create the record
                 var record = new Portfolio
                 {
-                    UserId = userId,
+                    UserId = order.userId,
                     Ticker = order.Ticker,
                     Quantity = order.Quantity,
                 };
+
+                var errors = Helper.ValidateModel(record);
+
+                if (!string.IsNullOrEmpty(errors))
+                {
+                    return new ServiceActionResult<string>(HttpStatusCode.BadRequest, errors, []);
+                }
 
                 await DBContext.Portfolios.AddAsync(record);
             }
@@ -104,7 +108,7 @@ namespace PortfolioService.Data.Services
             // Save the add/update changes
             await DBContext.SaveChangesAsync();
 
-            return new ServiceActionResult<bool>(HttpStatusCode.OK, "", true);
+            return new ServiceActionResult<string>(HttpStatusCode.OK, "", []);
         }
 
         /// <summary>
@@ -116,21 +120,17 @@ namespace PortfolioService.Data.Services
         /// <param name="order">
         ///     The order containing the stock's ticker and quantity
         /// </param>
-        /// <param name="userId">
-        ///     The user id
-        /// </param>
-        /// <returns></returns>
-        public async Task<ServiceActionResult<bool>> SellStock(Portfolio? portfolio, OrderDTO order, long userId)
+        public async Task<ServiceActionResult<string>> SellStock(Portfolio? portfolio, OrderDTO order)
         {
             if (portfolio == null)
             {
                 // User does not own the stock and is trying to sell it, throw error
-                return new ServiceActionResult<bool>(HttpStatusCode.BadRequest, PORTFOLIO_STOCK_NOT_FOUND, false);
+                return new ServiceActionResult<string>(HttpStatusCode.BadRequest, PORTFOLIO_STOCK_NOT_FOUND, []);
             } 
             else if (order.Quantity > portfolio.Quantity)
             {
                 // Not enough quantity
-                return new ServiceActionResult<bool>(HttpStatusCode.BadRequest, PORTFOLIO_INVALID_QUANTITY, false);
+                return new ServiceActionResult<string>(HttpStatusCode.BadRequest, PORTFOLIO_INVALID_QUANTITY, []);
             }
          
             if (order.Quantity == portfolio.Quantity)
@@ -147,7 +147,7 @@ namespace PortfolioService.Data.Services
             
             await DBContext.SaveChangesAsync();
 
-            return new ServiceActionResult<bool>(HttpStatusCode.OK, "", true);
+            return new ServiceActionResult<string>(HttpStatusCode.OK, "", []);
         }
     }
 }

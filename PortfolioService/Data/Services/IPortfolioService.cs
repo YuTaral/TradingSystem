@@ -21,12 +21,9 @@ namespace PortfolioService.Data.Services
         /// <summary>
         ///     Update user's portfolio
         /// </summary>
-        /// <param name="userId">
-        ///     The user id
-        /// </param>
         /// <param name="order">
         ///     The the order which is being executed
         /// </param>
-        public Task<ServiceActionResult<bool>> UpdatePortfolio(long userId, OrderDTO order);
+        public Task<ServiceActionResult<string>> UpdatePortfolio(OrderDTO order);
     }
 }

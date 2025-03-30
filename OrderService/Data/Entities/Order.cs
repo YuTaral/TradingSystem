@@ -22,6 +22,7 @@ namespace OrderService.Data.Entities
         public required int Quantity { get; set; }
 
         [EnumDataType(typeof(OrderSide), ErrorMessage = ORDER_SIDE_ERROR)]
+        [MinLength(3, ErrorMessage = ORDER_SIDE_ERROR)]
         public required string Side { get; set; }
 
         [Range(0.1, double.MaxValue, ErrorMessage = ORDER_STOCK_PRICE_RANGE_ERROR)]

@@ -4,27 +4,29 @@ using static Shared.Constants;
 using OrderService.Data.Entities;
 using Shared.Utils;
 using Shared.Models.DTO;
+using System.Text.Json;
 
 namespace OrderService.Data.Services
 {
     /// <summary>
     ///     OrderService class implementing IOrderService
     /// </summary>
-    public class OrderService(OrderDBContext DB, PriceConsumer ps) : IOrderService
+    public class OrderService(OrderDBContext DB, PriceConsumer ps, RabbitMQClient c) : IOrderService
     {
         private readonly OrderDBContext DBContext = DB;
         private readonly PriceConsumer priceConsumer = ps;
+        private readonly RabbitMQClient client = c;
 
         public async Task<ServiceActionResult<Order>> AddOrder(string userIdStr, OrderDTO? orderDTO)
         {
-            var validationResult = ValidateOrder(userIdStr, orderDTO);
+            var validationResult = await ValidateOrder(userIdStr, orderDTO);
 
             if (validationResult.Code != (int) HttpStatusCode.OK) 
             {
-                return new ServiceActionResult<Order>(validationResult.Code, validationResult.Message, null);
+                return new ServiceActionResult<Order>(validationResult.Code, validationResult.Message, []);
             }
 
-            await DBContext.Orders.AddAsync(validationResult.Data!);
+            await DBContext.Orders.AddAsync(validationResult.Data[0]);
             await DBContext.SaveChangesAsync();
 
             return new ServiceActionResult<Order>(HttpStatusCode.Created, "", validationResult.Data);
@@ -39,25 +41,25 @@ namespace OrderService.Data.Services
         /// <param name="orderDTO">
         ///     OrderDTO object send in the request body
         /// </param>
-        private ServiceActionResult<Order> ValidateOrder(string userIdStr, OrderDTO? orderDTO)
+        private async Task<ServiceActionResult<Order>> ValidateOrder(string userIdStr, OrderDTO? orderDTO)
         {
             long userId = 0;
 
             // Validate the data
             if (string.IsNullOrEmpty(userIdStr) || orderDTO == null)
             {
-                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_INVALID_DATA, null);
+                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_INVALID_DATA, []);
             }
             else if (!long.TryParse(userIdStr, out userId))
             {
-                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_INVALID_DATA, null);
+                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_INVALID_DATA, []);
             }
 
             // Get the latest price of the stock, if invalid ticker is provided -1 is returned
             var stockPrice = priceConsumer.GetStockPrice(orderDTO.Ticker);
             if (stockPrice == -1)
             {
-                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_FAILED_TO_GET_PRICE, null);
+                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, ADD_ORDER_FAILED_TO_GET_PRICE, []);
             }
 
             var order = new Order
@@ -74,10 +76,21 @@ namespace OrderService.Data.Services
 
             if (!string.IsNullOrEmpty(errors))
             {
-                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, errors, null);
+                return new ServiceActionResult<Order>(HttpStatusCode.BadRequest, errors, []);
             }
 
-            return new ServiceActionResult<Order>(HttpStatusCode.OK, "", order);
+            orderDTO.userId = userId;
+
+            // Create new RPC event and send the event
+            var rPCEvent = new RPCEvent(RPCEventTypes.UPDATE_PORTFOLIO, orderDTO);
+
+            var response = await client.CallAsync(rPCEvent.ToString());
+
+            if (response.Code != (int) HttpStatusCode.OK) {
+                return new ServiceActionResult<Order>(response.Code, response.Message, []);
+            }
+
+            return new ServiceActionResult<Order>(HttpStatusCode.OK, "", [order]);
         }
     }
 }

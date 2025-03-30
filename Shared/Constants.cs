@@ -11,6 +11,11 @@
             SELL
         }
 
+        public enum RPCEventTypes
+        {
+            UPDATE_PORTFOLIO
+        }
+
         public const string ORDER_CONTROLLER_ROUTE = "/api/order";
         public const string PORTFOLIO_CONTROLLER_ROUTE = "/api/portfolio";
 
@@ -22,11 +27,16 @@
         public const string KAFKA_STOCK_PRICE_UPDATE_TOPIC = "stock-prices-update";
         public const string KAFKA_STOCK_PRICE_UPDATE_KEY = "stocks-dictionary";
 
+        public const string RPC_QUEUE = "rpc_queue";
+        public const string RPC_HOST = "localhost";
+
+        public const string UNEXPECTED_ERROR_OCCURRED = "Unexpected error occurred while processing your request. Please try again";
+
         public const string STOCK_NOT_FOUND = "Stock not found";
         public const string ADD_ORDER_INVALID_DATA = "Add order failed - invalid data provided";
         public const string ADD_ORDER_FAILED_TO_GET_PRICE= "Add order failed - unable to get stock price";
         public const string USER_PORTFOLIO_NOT_FOUND = "User portfolio not found";
-        public const string PORTFOLIO_STOCK_NOT_FOUND = "User portfolio does not own the stock";
+        public const string PORTFOLIO_STOCK_NOT_FOUND = "User does not own the stock";
         public const string PORTFOLIO_INVALID_QUANTITY = "Invalid stock quantity - sell quantity must be less or equal to the owned quantity";
 
         public const string USER_ID_ERROR = "User id must be greater than 0";
@@ -38,6 +48,5 @@
         public const string ORDER_SIDE_ERROR = "Order side must be BUY or SELL";
 
         public const string PORTFOLIO_STOCK_QUANTITY_RANGE_ERROR = "Stock\'s quantity must not be negative";
-
     }
 }
