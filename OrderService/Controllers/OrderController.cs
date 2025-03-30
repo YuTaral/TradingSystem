@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrderService.Data.DTO;
 using OrderService.Data.Services;
+using Shared.Models.DTO;
 using static Shared.Constants;
 
 namespace OrderService.Controllers

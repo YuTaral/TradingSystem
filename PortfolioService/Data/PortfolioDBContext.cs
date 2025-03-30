@@ -18,9 +18,6 @@ namespace PortfolioService.Data
 
             // Add UserId index
             modelBuilder.Entity<Portfolio>().HasIndex(p => p.UserId);
-
-            // Configure Portfolio to be keyless
-            modelBuilder.Entity<Portfolio>().HasNoKey();
         }
     }
 }

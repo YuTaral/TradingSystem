@@ -8,6 +8,10 @@ namespace PortfolioService.Data.Entities
     /// </summary>
     public class Portfolio
     {
+
+        [Key]
+        public long Id { get; set; }
+
         [Range(1, long.MaxValue, ErrorMessage = USER_ID_ERROR)]
         public required long UserId { get; set; }
 

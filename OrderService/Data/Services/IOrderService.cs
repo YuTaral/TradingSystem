@@ -1,6 +1,6 @@
 ﻿using Shared.Models;
-using OrderService.Data.DTO;
 using OrderService.Data.Entities;
+using Shared.Models.DTO;
 
 namespace OrderService.Data.Services
 {

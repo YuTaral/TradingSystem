@@ -1,4 +1,4 @@
-﻿namespace OrderService.Data.DTO
+﻿namespace Shared.Models.DTO
 {
     /// <summary>
     ///     OrderDTO class representing a single order

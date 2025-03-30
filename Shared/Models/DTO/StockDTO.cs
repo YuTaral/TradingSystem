@@ -1,4 +1,4 @@
-﻿namespace Shared.Models
+﻿namespace Shared.Models.DTO
 {
     /// <summary>
     ///     StockDTO representing a single stock
