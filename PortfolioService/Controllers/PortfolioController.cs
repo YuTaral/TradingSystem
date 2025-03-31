@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioService.Data.Services;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace PortfolioService.Controllers
 {

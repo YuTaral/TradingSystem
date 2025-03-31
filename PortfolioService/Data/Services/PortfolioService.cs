@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PortfolioService.Data.DTO;
 using PortfolioService.Data.Entities;
-using Shared.Models;
-using Shared.Models.DTO;
+using SharedData.Models;
+using SharedData.Models.DTO;
 using Shared.Utils;
 using System.Net;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace PortfolioService.Data.Services
 {
@@ -30,7 +30,7 @@ namespace PortfolioService.Data.Services
 
             if (stocks.Count == 0)
             {
-                return new ServiceActionResult<PortfolioDTO>(HttpStatusCode.NotFound, USER_PORTFOLIO_NOT_FOUND, null);
+                return new ServiceActionResult<PortfolioDTO>(HttpStatusCode.NotFound, USER_PORTFOLIO_NOT_FOUND, []);
             }
 
             decimal totalValue = 0;

@@ -1,9 +1,9 @@
-﻿using Shared.Models;
+﻿using SharedData.Models;
 using System.Net;
-using static Shared.Constants;
+using static SharedData.Constants;
 using OrderService.Data.Entities;
 using Shared.Utils;
-using Shared.Models.DTO;
+using SharedData.Models.DTO;
 using System.Text.Json;
 
 namespace OrderService.Data.Services

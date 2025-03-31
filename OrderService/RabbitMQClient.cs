@@ -1,10 +1,10 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Shared.Models;
+using SharedData.Models;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace OrderService
 {

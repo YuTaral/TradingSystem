@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using static Shared.Constants;
+using static SharedData.Constants;
 
-namespace Shared.Models.DTO
+namespace SharedData.Models.DTO
 {
     /// <summary>
     ///     Class used to send RPC event with RabbitMQ

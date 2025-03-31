@@ -1,9 +1,9 @@
 ﻿using Confluent.Kafka;
-using Shared.Models;
+using SharedData.Models;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Text.Json;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace Shared.PriceConsumer
 {

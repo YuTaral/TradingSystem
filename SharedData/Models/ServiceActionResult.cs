@@ -1,8 +1,7 @@
 ﻿using System.Net;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Shared.Models
+namespace SharedData.Models
 {
     /// <summary>
     ///     Common class used to return response from each

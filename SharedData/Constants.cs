@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace SharedData
 {
     /// <summary>
     ///     Constants class containing messages
@@ -16,12 +16,11 @@
             UPDATE_PORTFOLIO
         }
 
-        public const string ORDER_CONTROLLER_ROUTE = "/api/order";
-        public const string PORTFOLIO_CONTROLLER_ROUTE = "/api/portfolio";
+        public const string ORDER_CONTROLLER_ROUTE = "order";
+        public const string PORTFOLIO_CONTROLLER_ROUTE = "portfolio";
 
-        public const string POST_ORDER_ROUTE = ORDER_CONTROLLER_ROUTE + "/add/{userId}";
-
-        public const string GET_PORTFOLIO = PORTFOLIO_CONTROLLER_ROUTE + "/get/{userId}";
+        public const string POST_ORDER_ROUTE = "/add/{userId}";
+        public const string GET_PORTFOLIO = "/get/{userId}";
 
         public const string KAFKA_BOOSTRAP_SERVER = "kafka:9092";
         public const string KAFKA_STOCK_PRICE_UPDATE_TOPIC = "stock-prices-update";
@@ -33,6 +32,7 @@
         public const string RPC_QUEUE = "rpc_queue";
         public const string RPC_HOST = "localhost";
 
+        public const string WRONG_URI = "The specified URI does not exist";
         public const string UNEXPECTED_ERROR_OCCURRED = "Unexpected error occurred while processing your request. Please try again";
 
         public const string STOCK_NOT_FOUND = "Stock not found";

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace PortfolioService.Data.Entities
 {

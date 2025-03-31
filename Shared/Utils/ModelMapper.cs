@@ -1,4 +1,4 @@
-﻿using Shared.Models.DTO;
+﻿using SharedData.Models.DTO;
 
 namespace Shared.Utils
 {

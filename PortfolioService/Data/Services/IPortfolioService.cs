@@ -1,6 +1,6 @@
 ﻿using PortfolioService.Data.DTO;
-using Shared.Models;
-using Shared.Models.DTO;
+using SharedData.Models;
+using SharedData.Models.DTO;
 
 namespace PortfolioService.Data.Services
 {

@@ -1,13 +1,12 @@
-﻿using PortfolioService.Data;
-using PortfolioService.Data.Services;
+﻿using PortfolioService.Data.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Shared.Models;
-using Shared.Models.DTO;
+using SharedData.Models;
+using SharedData.Models.DTO;
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using static Shared.Constants;
+using static SharedData.Constants;
 
 namespace PortfolioService
 {

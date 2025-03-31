@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderService.Data.Services;
-using Shared.Models.DTO;
-using static Shared.Constants;
+using SharedData.Models.DTO;
+using static SharedData.Constants;
 
 namespace OrderService.Controllers
 {
@@ -19,6 +19,7 @@ namespace OrderService.Controllers
         public async Task<ActionResult> AddOrder(string userId, [FromBody] OrderDTO order)
         {
             var result = await service.AddOrder(userId, order);
+
             return new JsonResult(result)
             {
                 StatusCode = result.Code

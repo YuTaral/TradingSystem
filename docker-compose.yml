@@ -133,6 +133,19 @@ services:
         condition: service_healthy
       priceservice:
         condition: service_healthy  
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: ./ApiGateway/Dockerfile
+    ports:
+      - "5000:8080"
+    networks:
+      - kafka
+    depends_on:
+      - priceservice
+      - orderservice
+      - portfolioservice
     
 networks:
   kafka:
