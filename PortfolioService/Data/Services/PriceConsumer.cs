@@ -1,4 +1,4 @@
-﻿using Shared.Utils;
+﻿using Shared.PriceConsumer;
 
 namespace PortfolioService.Data.Services
 {
@@ -6,19 +6,9 @@ namespace PortfolioService.Data.Services
     ///     OrderServicePriceConsumer as background service.
     ///     Use the shared PriceConsumerService to access the stock prices
     /// </summary>
-    public class PriceConsumer: BackgroundService
+    public class PriceConsumer(SharedPriceConsumer pc): BackgroundService
     {
-        private const string CONSUMER_GROUP_ID = "group_2";
-        private readonly SharedPriceConsumer priceConsumer;
-
-        /// <summary>
-        ///     Class constructor. Initialize the shared PriceConsumer
-        ///     with the current group id
-        /// </summary>
-        public PriceConsumer()
-        {
-            priceConsumer = new SharedPriceConsumer(CONSUMER_GROUP_ID);
-        }
+        private readonly SharedPriceConsumer priceConsumer = pc;
 
         /// <summary>
         ///     Start consuming the events (messages)

@@ -5,7 +5,7 @@ using System.Net;
 using System.Text.Json;
 using static Shared.Constants;
 
-namespace Shared.Utils
+namespace Shared.PriceConsumer
 {
     /// <summary>
     ///     Shared PriceConsumer used to consume kafka events (messages)

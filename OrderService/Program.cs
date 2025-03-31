@@ -1,10 +1,21 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OrderService;
 using OrderService.Data;
 using OrderService.Data.Services;
+using Shared.PriceConsumer;
 using MyOrderService = OrderService.Data.Services.OrderService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<SharedPriceConsumerOptions>(
+    builder.Configuration.GetSection("SharedPriceConsumer"));
+
+builder.Services.AddSingleton<SharedPriceConsumer>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<SharedPriceConsumerOptions>>().Value;
+    return new SharedPriceConsumer(options.GroupName);
+});
 
 builder.Services.AddHostedService((sp) => sp.GetRequiredService<PriceConsumer>());
 builder.Services.AddSingleton<PriceConsumer>();
