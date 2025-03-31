@@ -23,9 +23,12 @@
 
         public const string GET_PORTFOLIO = PORTFOLIO_CONTROLLER_ROUTE + "/get/{userId}";
 
-        public const string KAFKA_BOOSTRAP_SERVER = "localhost:9092";
+        public const string KAFKA_BOOSTRAP_SERVER = "kafka:9092";
         public const string KAFKA_STOCK_PRICE_UPDATE_TOPIC = "stock-prices-update";
         public const string KAFKA_STOCK_PRICE_UPDATE_KEY = "stocks-dictionary";
+
+        public const string RABBITMQ_HOST_NAME = "rabbitmq";
+        public const int RABBITMQ_PORT_NUMBER = 5672;
 
         public const string RPC_QUEUE = "rpc_queue";
         public const string RPC_HOST = "localhost";

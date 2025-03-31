@@ -13,7 +13,7 @@ namespace OrderService
     ///     after the event subscriber execute the necessary logic. 
     ///     Implemented with "Remote Procedure Calling" pattern and RabbitMQ
     /// </summary>
-    public class RabbitMQClient : IAsyncDisposable
+    public class RabbitMQClient: IAsyncDisposable
     {
         private ConcurrentDictionary<string, TaskCompletionSource<ServiceActionResult<string>>>? callbackMapper;
         private IConnectionFactory? connectionFactory;
@@ -40,7 +40,7 @@ namespace OrderService
         private async Task Initialize()
         {
             callbackMapper = new();
-            connectionFactory = new ConnectionFactory { HostName = RPC_HOST };
+            connectionFactory = new ConnectionFactory { HostName = RABBITMQ_HOST_NAME, Port = RABBITMQ_PORT_NUMBER };
             connection = await connectionFactory.CreateConnectionAsync();
             channel = await connection.CreateChannelAsync();
 

@@ -18,6 +18,7 @@ namespace PortfolioService
     public class RabbitMQServer(IServiceScopeFactory sf)
     {
         private readonly IServiceScopeFactory scopeFactory = sf;
+
         private ConnectionFactory? factory;
         private IConnection? connection;
         private IChannel? channel;
@@ -40,7 +41,7 @@ namespace PortfolioService
         /// </summary>
         private async Task Initialize()
         {
-            factory = new ConnectionFactory { HostName = RPC_HOST };
+            factory = new ConnectionFactory { HostName = RABBITMQ_HOST_NAME, Port = RABBITMQ_PORT_NUMBER };
             connection = await factory.CreateConnectionAsync();
             channel = await connection.CreateChannelAsync();
 
