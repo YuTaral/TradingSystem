@@ -6,7 +6,7 @@
 5. Open Docker's terminal and navigate to the solution's root folder
 6. Run the command "docker-compose up" and wait until all services are started (5 - 10 mins)
 7. Once all services are started, you can use a tool like Postman to send requests
-8. To add order, send POST request to "http://localhost:5000/portfolio/get/{userId}" with content:
+8. To add order, send POST request to "http://localhost:5000/order/add/{userId}" with content:
 	{
 		"Ticker": "TSLA",
 		"Quantity": 1000,
