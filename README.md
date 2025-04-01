@@ -13,5 +13,5 @@
 		"Side": "BUY"
 	}
 9. To view user's portfolio value, send GET request to "http://localhost:5000/portfolio/get/{userId}"
-11. To sell a steck specify "Side": "SELL" in the POST request
+11. To sell a stock specify "Side": "SELL" in the POST request
 12. Available stocks - AAPL, TSLA, NVDA, MFST, AMZN
